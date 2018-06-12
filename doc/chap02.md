@@ -44,7 +44,6 @@ version 5.5.0
 ```commandline
 export TARGET=x86_64-pc-linux
 export PREFIX=/usr/cross
-export PATH=$PREFIX/bin:$PATH
 patch -p1 < ../0001
 ./contrib/download_prerequisites
 ./configure --target=$TARGET --prefix=$PREFIX --disable-nls --enable-languages=c --without-headers --disable-shared --enable-multilib
@@ -65,3 +64,8 @@ version 2.13.02
 exe 파일 다운 받아 cygwin/bin에 넣기
 
 ##qemu 설치
+
+## ubuntu 설치
+[binutils](http://ftp.gnu.org/gnu/binutils/)
+[gcc](https://bigsearcher.com/mirrors/gcc/releases/gcc-4.9.4/)
+./contrib/download_prerequisites 로 gcc 빌드에필요한 라이브러리 다운로드
