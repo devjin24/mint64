@@ -1,4 +1,4 @@
-all: BootLoader Kernel32 Kernel64 Disk.img Utility
+all: Utility BootLoader Kernel32 Kernel64 Disk.img
 
 BootLoader:
 	@echo
@@ -38,7 +38,7 @@ Disk.img: 00.BootLoader/BootLoader.bin 01.Kernel32/Kernel32.bin 02.kernel64/Kern
 	@echo  ====================== make Disk image ======================
 	@echo
 
-	./ImageMaker.exe $^
+	./ImageMaker $^
 
 	@echo
 	@echo  ================ Success make Disk image ======================

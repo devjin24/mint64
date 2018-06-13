@@ -1,8 +1,8 @@
-all: ImageMaker.exe
+all: ImageMaker
 
-ImageMaker.exe: ImageMaker.c
+ImageMaker: ImageMaker.c
 	gcc -o $@ $<
-	mv ImageMaker.exe ../../
+	mv ImageMaker ../../
 
 clean:
-	rm -f ../../ImageMaker.exe
+	rm -f ../../ImageMaker
