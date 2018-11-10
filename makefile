@@ -1,63 +1,50 @@
-all: Utility BootLoader Kernel32 Kernel64 Disk.img
+# file		makefile
+# date		2008/11/12
+# author	kkamagui 
+# brief		OS 이미지를 빌드하기 위한 make 파일
 
+# 기본적으로 빌드를 수행할 목록
+all: BootLoader Kernel32 Disk.img
+
+# 부트 로더 빌드를 위해 부트 로더 디렉터리에서 make 실행
 BootLoader:
-	@echo
-	@echo  ====================== Build Boot Loader ======================
-	@echo
+	@echo 
+	@echo ============== Build Boot Loader ===============
+	@echo 
 	
 	make -C 00.BootLoader
-	
-	@echo
-	@echo  ================ Success Build Boot Loader ===================
-	@echo
 
+	@echo 
+	@echo =============== Build Complete ===============
+	@echo 
+	
+# 가상 OS 이미지 빌드를 위해 보호 모드 커널 디렉터리에서 make 실행
 Kernel32:
-	@echo
-	@echo ====================== Build 32bit kernel ======================
-	@echo
+	@echo 
+	@echo ============== Build 32bit Kernel ===============
+	@echo 
 	
 	make -C 01.Kernel32
+
+	@echo 
+	@echo =============== Build Complete ===============
+	@echo 
+
 	
-	@echo
-	@echo ================ Success Build 32bit kernel ======================
-	@echo
+# OS 이미지 생성
+Disk.img: BootLoader Kernel32
+	@echo 
+	@echo =========== Disk Image Build Start ===========
+	@echo 
 
-Kernel64:
-	@echo
-	@echo ====================== Build 64bit kernel ======================
-	@echo
+	cat 00.BootLoader/BootLoader.bin 01.Kernel32/VirtualOS.bin > Disk.img
 
-	make -C 02.Kernel64
-
-	@echo
-	@echo ================ Success Build 64bit kernel ======================
-	@echo
-
-Disk.img: 00.BootLoader/BootLoader.bin 01.Kernel32/Kernel32.bin 02.kernel64/Kernel64.bin
-	@echo
-	@echo  ====================== make Disk image ======================
-	@echo
-
-	./ImageMaker $^
-
-	@echo
-	@echo  ================ Success make Disk image ======================
-	@echo
-
-Utility:
-	@echo
-	@echo  ====================== Utility Build start ======================
-	@echo
-
-	make -C 04.Utility
-
-	@echo
-	@echo  ================ Utility Build Start ======================
-	@echo
-
+	@echo 
+	@echo ============= All Build Complete =============
+	@echo 
+	
+# 소스 파일을 제외한 나머지 파일 정리	
 clean:
 	make -C 00.BootLoader clean
 	make -C 01.Kernel32 clean
-	make -C 02.Kernel64 clean
-	make -C 04.Utility clean
-	rm -f Disk.img
+	rm -f Disk.img	

@@ -46,7 +46,7 @@ export TARGET=x86_64-pc-linux
 export PREFIX=/usr/cross
 patch -p1 < ../0001
 ./contrib/download_prerequisites
-./configure --target=$TARGET --prefix=$PREFIX --disable-nls --enable-languages=c --without-headers --disable-shared --enable-multilib --with-system-zlib
+./configure --target=$TARGET --prefix=$PREFIX --disable-nls --enable-languages=c --without-headers --disable-shared --enable-multilib --with-system-zlib --disable-libssp
 make configure-host
 make all-gcc
 make install-gcc
@@ -64,6 +64,7 @@ version 2.13.02
 exe 파일 다운 받아 cygwin/bin에 넣기
 
 ##qemu 설치
+10.4 버전 설치
 
 ## ubuntu 설치
 [binutils](http://ftp.gnu.org/gnu/binutils/)

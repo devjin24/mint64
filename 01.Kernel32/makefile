@@ -1,55 +1,15 @@
-NASM32 = nasm
-GCC32 = x86_64-pc-linux-gcc -c -m32 -ffreestanding
-LD32 = x86_64-pc-linux-ld -melf_i386 -T ../elf_i386.x -nostdlib -e Main -Ttext 0x10200
-OBJCOPY32 = x86_64-pc-linux-objcopy -j .text -j .data -j .rodata -j .bss -S -O binary
+# file		makefile
+# date		2008/11/12
+# author	kkamagui 
+# brief		가상 OS 이미지를 빌드하기 위한 make 파일
 
-OBJECTDIRECTORY = Temp
-SOURCEDIRECTORY = Source
+# 기본적으로 빌드를 수행할 목록
+all: VirtualOS.bin
 
-all: prepare Kernel32.bin
+# 부트 로더의 기능을 테스트 하기 위한 가상의 OS 이미지 빌드
+VirtualOS.bin: VirtualOS.asm
+	nasm -o VirtualOS.bin VirtualOS.asm
 
-prepare:
-	mkdir -p $(OBJECTDIRECTORY)
-
-$(OBJECTDIRECTORY)/EntryPoint.bin: $(SOURCEDIRECTORY)/EntryPoint.s
-	$(NASM32) -o $@ $<
-
-dep:
-	@echo === Make Dependency File ===
-	make -C $(OBJECTDIRECTORY) -f ../makefile InternalDependency
-	@echo === Dependency Search Complate ===
-
-ExecuteInternalBuild: dep
-	make -C $(OBJECTDIRECTORY) -f ../makefile Kernel32.elf
-
-$(OBJECTDIRECTORY)/Kernel32.elf.bin: ExecuteInternalBuild
-	$(OBJCOPY32) $(OBJECTDIRECTORY)/Kernel32.elf $@
-
-Kernel32.bin: $(OBJECTDIRECTORY)/EntryPoint.bin $(OBJECTDIRECTORY)/Kernel32.elf.bin
-	cat $^ > $@
-
+# 소스 파일을 제외한 나머지 파일 정리	
 clean:
-	rm -f *.bin
-	rm -f $(OBJECTDIRECTORY)/*.*
-
-CENTRYPOINTOBJECTFILE = Main.o
-CSOURCEFILES = $(wildcard ../$(SOURCEDIRECTORY)/*.c)
-ASSEMBLYSOURCEFILES = $(wildcard ../$(SOURCEDIRECTORY)/*.asm)
-COBJECTFILES = $(subst Main.o, ,$(notdir $(patsubst %.c,%.o,$(CSOURCEFILES))))
-ASSEMBLYOBJECTFILES = $(notdir $(patsubst %.asm, %.o,$(ASSEMBLYSOURCEFILES)))
-
-%.o: ../$(SOURCEDIRECTORY)/%.c
-	$(GCC32) -c $<
-
-%.o: ../$(SOURCEDIRECTORY)/%.asm
-	$(NASM32) -f elf32 -o $@ $<
-
-InternalDependency:
-	$(GCC32) -MM $(CSOURCEFILES) > Dependency.dep
-
-Kernel32.elf: $(CENTRYPOINTOBJECTFILE) $(COBJECTFILES) $(ASSEMBLYOBJECTFILES)
-	$(LD32) -o $@ $^
-
-ifeq (Dependency.dep, $(wildcard Dependency.dep))
-include Dependency.dep
-endif
+	rm -f VirtualOS.bin

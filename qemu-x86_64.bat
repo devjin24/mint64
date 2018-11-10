@@ -17,7 +17,7 @@ REM PCI-based PC(default): -M pc
 REM ISA-based PC         : -M isapc
 REM -M isapc is added for NE2000 ISA card.
 
-set PROJECT_HOME="C:\Users\devjin24\GitHub\mint64"
+set PROJECT_HOME="C:\Users\devjin24\workspace\mint64"
 set QEMU_HOME="C:\Program Files (x86)\qemu-0.10.4"
 chdir /d %QEMU_HOME%
 qemu-system-x86_64.exe -L . -m 64 -fda %PROJECT_HOME%\Disk.img -boot a -localtime -M pc -serial tcp::4444,server,nowait -smp 2
