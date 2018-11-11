@@ -22,12 +22,23 @@ Kernel32:
 	@echo =============== Build Complete ===============
 	@echo 
 
+Utility:
+	@echo 
+	@echo ============== Build Utility ===============
+	@echo 
+	
+	make -C 04.Utility/00.ImageMaker ImageMaker
+
+	@echo 
+	@echo =============== Build Complete ===============
+	@echo 
+
 Disk.img: 00.BootLoader/BootLoader.bin 01.Kernel32/Kernel32.bin
 	@echo 
 	@echo =========== Disk Image Build Start ===========
 	@echo 
 
-	cat $^ > Disk.img
+	./ImageMaker $^
 
 	@echo 
 	@echo ============= All Build Complete =============

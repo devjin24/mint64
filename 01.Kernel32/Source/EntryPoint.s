@@ -33,7 +33,7 @@ PROTECTEDMODE:
 	call PRINTMESSAGE
 	add esp, 12
 
-	jmp $
+	jmp dword 0x08: 0x10200
 
 PRINTMESSAGE:
 	push ebp
@@ -53,7 +53,7 @@ PRINTMESSAGE:
 
 .MESSAGELOOP:
 	mov cl, byte [ esi ]
-	cmp cl, 9
+	cmp cl, 0
 	je .MESSAGEEND
 
 	mov byte [ edi + 0xB8000 ], cl
