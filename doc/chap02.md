@@ -46,6 +46,7 @@ export TARGET=x86_64-pc-linux
 export PREFIX=/usr/cross
 patch -p1 < ../0001
 ./contrib/download_prerequisites
+sudo apt install libzip-dev
 ./configure --target=$TARGET --prefix=$PREFIX --disable-nls --enable-languages=c --without-headers --disable-shared --enable-multilib --with-system-zlib --disable-libssp
 make configure-host
 make all-gcc
