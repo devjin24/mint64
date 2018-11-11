@@ -7,7 +7,21 @@ START:
 	mov ax, 0x1000
 	mov ds, ax
 	mov es, ax
-	
+	; A20 게이트 활성화
+	mov ax, 0x2401
+	int 0x15
+
+	jc .A20GATEERROR
+	jmp .A20GATESUCCESS
+	; A20 게이트 활성화 끝
+
+.A20GATEERROR:
+	in al, 0x92
+	or al, 0x02
+	and al, 0xFE
+	out 0x92, al
+
+.A20GATESUCCESS:	
 	cli
 	lgdt [ GDTR ]
 

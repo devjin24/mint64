@@ -1,2 +1,3 @@
 #!/bin/bash
+make && \
 cmd.exe /C qemu-x86_64.bat
