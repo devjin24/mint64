@@ -1,3 +1,6 @@
 #!/bin/bash
-make && \
-cmd.exe /C qemu-x86_64.bat
+make clean
+make
+if [ $? -eq 0 ];then
+  cmd.exe /C qemu-x86_64.bat
+fi
