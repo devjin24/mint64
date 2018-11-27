@@ -1,5 +1,6 @@
 #include "Types.h"
 #include "Page.h"
+#include "ModeSwitch.h"
 
 void kPrintString( int iX, int iY, const char* pcString);
 bool kInitializeKernel64Area(void);
@@ -7,6 +8,8 @@ bool kIsMemoryEnough(void);
 
 void Main( void) {
 	dword i;
+	dword dwEAX, dwEBX, dwECX, dwEDX;
+	char vcVenderString[13] = {0,};
 
 	kPrintString(0, 3, "[Pass] C Language Kernel Start.");
 
@@ -30,6 +33,27 @@ void Main( void) {
 	kPrintString(0,6, "[    ] IA-32e Page Tables Initialize.");
 	kInitializePageTables();
 	kPrintString(1,6,"Pass");
+
+	kReadCPUID(0x00, &dwEAX, &dwEBX, &dwECX, &dwEDX);
+	*(dword*)vcVenderString = dwEBX;
+	*((dword*) vcVenderString + 1) = dwEDX;
+	*((dword*)vcVenderString + 2) = dwECX;
+
+	kPrintString(0,7, "[            ] Processor Vendor String.");
+	kPrintString(1,7, vcVenderString);
+
+	kReadCPUID(0x80000001, &dwEAX, &dwEBX, &dwECX, &dwEDX);
+	kPrintString(0,8,"[    ] 6bit Mode Support Check.");
+	if(dwEDX & (1 << 29)) {
+		kPrintString(1,8,"Pass");
+	} else {
+		kPrintString(1,8, "Fail");
+		kPrintString(0,9, "This processor does not support 64bit mode~!!");
+		while(1);
+	}
+
+	kPrintString(0,9,"Switch To IA-32e Mode");
+
 	while(1);
 }
 
