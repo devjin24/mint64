@@ -65,6 +65,14 @@ version 2.13.02
 exe 파일 다운 받아 cygwin/bin에 넣기
 
 ##qemu 설치
+[QEMU 다운로드사이트](https://download.qemu.org)
+[QEMU build 참고 사이트](https://wiki.qemu.org/Hosts/Linux)
+```
+sudo apt install libsdl1.2-dev libglib2.0-dev libfdt-dev
+LIBS+=-lrt ./configure --prefix=/usr/cross --target-list=x86_64-softmmu --disable-vnc
+make
+make install
+```
 10.4 버전 설치
 
 ## ubuntu 설치

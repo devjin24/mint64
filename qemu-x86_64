@@ -5,5 +5,5 @@ make
 #  cmd.exe /C qemu-x86_64.bat
 #fi
 # PROJECT_HOME="C:\Users\devjin24\workspace\mint64"
-qemu-system-x86_64 -L . -m 64 -fda Disk.img -boot a -localtime -M pc -serial tcp::4444,server,nowait -smp 2
+qemu-system-x86_64 -L /usr/cross/share/qemu -m 64 -fda /home/devjin24/workspace/mint64/Disk.img -boot a -localtime -M pc -serial tcp::4444,server,nowait -smp 2
 
