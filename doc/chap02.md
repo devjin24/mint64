@@ -73,7 +73,16 @@ LIBS+=-lrt ./configure --prefix=/usr/cross --target-list=x86_64-softmmu --disabl
 make
 make install
 ```
-10.4 버전 설치
+13장부터 이미지 안읽히는 버그 수정
+```
+    mov byte [ SECTORNUMBER ], al       ; 증가시킨 섹터 번호를 SECTORNUMBER에 다시 설정
+    cmp al, 37                          ; 증가시킨 섹터 번호를 37와 비교
+    jl READDATA                         ; 섹터 번호가 37 미만이라면 READDATA로 이동
+```
+표준화되진 못했지만 2.88MB 규격의 FD가 있는데(Extra-Density Floppy Disk, EDFD라고 합니다.)
+요즘 QEMU가 그쪽에 맞춰진듯 합니다.
+버그까진 아니고.. 2.88MB로 에뮬레이션하는 신형 QEMU에 맞추지 못했다고 보면 되겠네요.
+PC에서 부팅시에도, 모드는 FDD 에뮬레이션 모드지만 CHS는 USB 용량을 따라갔을 확률이 높습니다...
 
 ## ubuntu 설치
 [binutils](http://ftp.gnu.org/gnu/binutils/)
