@@ -27,6 +27,7 @@ START:
 
 	mov eax, 0x4000003B
 	mov cr0, eax
+	; CS 세그먼트 셀렉터 OFFSET : EIP
 	jmp dword 0x18:(PROTECTEDMODE - $$ + 0x10000)
 
 [BITS 32]
@@ -47,7 +48,7 @@ PROTECTEDMODE:
 	call PRINTMESSAGE
 	add esp, 12
 
-	jmp dword 0x18: 0x10200
+	jmp dword 0x18: 0x10200; C 언어 커널이 존재하는 0x10200 어드레스로 이동하여 C 언어 커널 수행
 
 PRINTMESSAGE:
 	push ebp

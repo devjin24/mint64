@@ -10,6 +10,7 @@ void Main(void) {
   byte bFlags;
   byte bTemp;
   int i = 0;
+  KEYDATA stData;
 
   kPrintString(0,10, "Switch To IA-32e Mode Success~!!");
   kPrintString(0,11, "[PASS] IA-32e C Language Kernel Start.");
@@ -27,9 +28,9 @@ void Main(void) {
   kInitializeIDTTables();
   kLoadIDTR(IDTR_STARTADDRESS);
   kPrintString(1, 14,"Pass");
-  kPrintString(0, 15, "[    ] Keyboard Activate.");
+  kPrintString(0, 15, "[    ] Keyboard Activate And Queue Initialize.");
 
-  if(kActivateKeyboard()== true) {
+  if(kInitializeKeyboard()== true) {
     kPrintString(1,15,"Pass");
     kChangeKeyboardLED(false, false, false);
   } else {
@@ -44,15 +45,13 @@ void Main(void) {
   kPrintString(1,16, "Pass");
 
   while(1) {
-    if(kIsOutputBufferFull() == true ) {
-      bTemp = kGetKeyboardScanCode();
+    if(kGetKeyFromKeyQueue(&stData) == true) {
+      if(stData.bFlags & KEY_FLAGS_DOWN) {
+        vcTemp[0] = stData.bASCIICode;
+        kPrintString(i++, 17, vcTemp);
 
-      if(kConvertScanCodeToASCIICode(bTemp, &(vcTemp[0]), &bFlags) == true) {
-        if(bFlags & KEY_FLAGS_DOWN) {
-          kPrintString(i++, 17, vcTemp);
-          if(vcTemp[0] == '0') {
-            bTemp = bTemp / 0;
-          }
+        if(vcTemp[0] == '0') {
+          bTemp = bTemp / 0;
         }
       }
     }
